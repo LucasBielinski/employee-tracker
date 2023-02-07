@@ -25,5 +25,5 @@ VALUES (001, "Lucas", "Bielinski", 001, NULL),
        (009, "Snake", "Man", 006, 002),
        (010, "Lisa", "Simpson", 006, 002),
        (011, "Robert", "Jones", 007, 002),
-       (012, "Zak", "Deerson", 008, 003),
-       (013, "Bobby", "Fergus", 009, 003);
+       (012, "Zak", "Deerson", 008, 001),
+       (013, "Bobby", "Fergus", 009, 001);

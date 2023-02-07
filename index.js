@@ -126,7 +126,10 @@ function addDepartment() {
             console.error(err);
           }
           console.table(department);
-          letsBegin();
+          db.query(`SELECT * FROM department`, function (err, results) {
+            console.table(results);
+            letsBegin();
+          });
         }
       );
     });
@@ -153,7 +156,7 @@ function addRole() {
       {
         type: "input",
         message: "please enter a department for this role",
-        name: "department",
+        name: "department_id",
       },
     ])
     .then((answers) => {
@@ -162,10 +165,23 @@ function addRole() {
         answers.id,
         answers.title,
         answers.salary,
-        answers.department
+        answers.department_id
       );
       console.log(role);
-      letsBegin();
+      db.query(
+        "INSERT INTO role (id, title, salary, department_id) VALUES(?,?,?,?)",
+        [role.id, role.title, role.salary, role.department_id],
+        (err, result) => {
+          if (err) {
+            console.error(err);
+          }
+          console.table(role);
+          db.query(`SELECT * FROM role`, function (err, results) {
+            console.table(results);
+            letsBegin();
+          });
+        }
+      );
     });
 }
 
@@ -190,13 +206,13 @@ function addEmployee() {
       {
         type: "input",
         message: "please input employee role",
-        name: "role",
+        name: "role_id",
       },
       {
         type: "input",
         message:
           "please input the id of the manager this employee reports to, if they are a manager, enter null",
-        name: "manager",
+        name: "manager_id",
       },
     ])
     .then((answers) => {
@@ -205,11 +221,29 @@ function addEmployee() {
         answers.id,
         answers.first_name,
         answers.last_name,
-        answers.role,
-        answers.manager
+        answers.role_id,
+        answers.manager_id
       );
-      console.log(employee);
-      letsBegin();
+      db.query(
+        "INSERT INTO employee (id, first_name, last_name, role_id, manager_id) VALUES(?,?,?,?,?)",
+        [
+          employee.id,
+          employee.first_name,
+          employee.last_name,
+          employee.role_id,
+          employee.manager_id,
+        ],
+        (err, result) => {
+          if (err) {
+            console.error(err);
+          }
+          console.table(employee);
+          db.query(`SELECT * FROM employee`, function (err, results) {
+            console.table(results);
+            letsBegin();
+          });
+        }
+      );
     });
 }
 
