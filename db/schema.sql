@@ -1,8 +1,8 @@
 DROP DATABASE IF EXISTS buisness_db;
 
-CREATE DATABASE buisness_db
+CREATE DATABASE buisness_db;
 
-USE buisness_db
+USE buisness_db;
 
 CREATE TABLE department (
     id INT NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE role (
     title VARCHAR(30) NOT NULL,
     salary DECIMAL NOT NULL,
     department_id INT NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
     FOREIGN KEY (department_id)
     REFERENCES department (id)
 );

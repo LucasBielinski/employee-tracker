@@ -4,7 +4,7 @@ require("dotenv").config();
 const Department = require("./Library/Department");
 const Employee = require("./Library/Employee");
 const Role = require("./Library/Role");
-const cTable = require('console.table')
+const cTable = require("console.table");
 
 const db = mysql.createConnection(
   {
@@ -23,7 +23,7 @@ function letsBegin() {
         type: "list",
         message: "Welcome!, would you like to select a table or edit one?",
         name: "option",
-        Choices: ["select a table", "edit a table", "quit"],
+        choices: ["select a table", "edit a table", "quit"],
       },
     ])
     .then((answer) => {
@@ -54,150 +54,168 @@ function tableSelection() {
     ])
     .then((answer) => {
       console.log(answer.table);
-      db.query(`SELECT * FROM ${answer.table}`, function(err, results){
-      console.log(results)
-        letsBegin()
-    },});
+      db.query(`SELECT * FROM ??`, answer.table, function (err, results) {
+        console.table(results);
+        letsBegin();
+      });
+    });
 }
 
 function editTable() {
-    inquirer
+  inquirer
     .prompt([
-        {
-            type: "list",
-            message: "what would you like to edit?",
-            name:"edit",
-            choices: ["add department", "add role", "add employee", "update employee", "back"]
-
-        },
+      {
+        type: "list",
+        message: "what would you like to edit?",
+        name: "edit",
+        choices: [
+          "add department",
+          "add role",
+          "add employee",
+          "update employee",
+          "back",
+        ],
+      },
     ])
     .then((answers) => {
-        console.log(answers.edit)
-        switch (answers.edit) {
-            case "add department":
-                addDepartment()
-                break;
-            case "add role":
-                addRole()
-                break;
-            case "add employee":
-                addEmployee()
-                break;
-            case "update employee":
-                update()
-                break;
-        
-            default:
-                letsBegin()
-                break;
+      console.log(answers.edit);
+      switch (answers.edit) {
+        case "add department":
+          addDepartment();
+          break;
+        case "add role":
+          addRole();
+          break;
+        case "add employee":
+          addEmployee();
+          break;
+        case "update employee":
+          update();
+          break;
+
+        default:
+          letsBegin();
+          break;
+      }
+    });
+}
+
+function addDepartment() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "please input department ID",
+        name: "id",
+      },
+      {
+        type: "input",
+        message: "please input department name",
+        name: "department_name",
+      },
+    ])
+    .then((answers) => {
+      console.log(answers);
+      let department = new Department(answers.id, answers.department_name);
+      console.log(department);
+      db.query(
+        "INSERT INTO department (id, name) VALUES(?,?)",
+        [department.id, department.name],
+        (err, result) => {
+          if (err) {
+            console.error(err);
+          }
+          console.table(department);
+          letsBegin();
         }
-    })
+      );
+    });
 }
 
-function addDepartment(){
-    inquirer
+function addRole() {
+  inquirer
     .prompt([
-        {
-            type: "input",
-            message:"please input department ID",
-            name: "id",
-        },
-        {
-            type: "input",
-            message: "please input department name",
-            name: "department_name",
-        },
+      {
+        type: "input",
+        message: "please input role id",
+        name: "id",
+      },
+      {
+        type: "input",
+        message: "pleases input role title",
+        name: "title",
+      },
+      {
+        type: "input",
+        message: "please input salary, in decimal form",
+        name: "salary",
+      },
+      {
+        type: "input",
+        message: "please enter a department for this role",
+        name: "department",
+      },
     ])
     .then((answers) => {
-        console.log(answers);
-        let department = new Department(
-            answers.id,
-            answers.department_name
-        )
-        console.log(department);
-        letsBegin()
-    })
+      console.log(answers);
+      let role = new Role(
+        answers.id,
+        answers.title,
+        answers.salary,
+        answers.department
+      );
+      console.log(role);
+      letsBegin();
+    });
 }
 
-function addRole(){
-    inquirer
+function addEmployee() {
+  inquirer
     .prompt([
-        {
-            type:"input",
-            message:"please input role id",
-            name: "id",
-        },
-        {
-            type:"input",
-            message:"pleases input role title",
-            name:"title",
-        },
-        {
-            type:"input",
-            message:"please input salary, in decimal form",
-            name:"salary",
-
-        },
-        {
-            type: "input",
-            message: "please enter a department for this role",
-            name:"department",
-        },
-        
+      {
+        type: "input",
+        message: "please input employee id",
+        name: "id",
+      },
+      {
+        type: "input",
+        message: "please input employee first name",
+        name: "first_name",
+      },
+      {
+        type: "input",
+        message: "please input employee last name",
+        name: "last_name",
+      },
+      {
+        type: "input",
+        message: "please input employee role",
+        name: "role",
+      },
+      {
+        type: "input",
+        message:
+          "please input the id of the manager this employee reports to, if they are a manager, enter null",
+        name: "manager",
+      },
     ])
     .then((answers) => {
-        console.log(answers);
-        let role = new Role(answers.id, answers.title, answers.salary, answers.department);
-        console.log(role)
-        letsBegin();
-    })
+      console.log(answers);
+      let employee = new Employee(
+        answers.id,
+        answers.first_name,
+        answers.last_name,
+        answers.role,
+        answers.manager
+      );
+      console.log(employee);
+      letsBegin();
+    });
 }
 
-function addEmployee(){
-    inquirer
-    .prompt([
-        {
-            type:"input", 
-            message:"please input employee id",
-            name:"id",
-        },
-        {
-            type:"input",
-            message:"please input employee first name",
-            name:"first_name",
-            
-        },
-        {
-            type: "input",
-            message: "please input employee last name",
-            name:"last_name",
-
-        },
-        {
-            type: "input",
-            message: "please input employee role",
-            name:"role",
-        },
-        {
-            type:"input",
-            message:"please input the id of the manager this employee reports to, if they are a manager, enter null",
-            name:"manager",
-        },
-    ])
-    .then((answers) => {
-        console.log(answers);
-        let employee = new Employee(answers.id,
-            answers.first_name,
-            answers.last_name,
-            answers.role,
-            answers.manager
-            )
-    console.log(employee)
-    letsBegin()
-    })
+function endProgram() {
+  console.log("goodbye");
+  process.exit(0);
 }
 
-
-function endProgram(){
-    console.log("goodbye")
-}
+letsBegin();
