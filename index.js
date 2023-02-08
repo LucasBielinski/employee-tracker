@@ -37,6 +37,7 @@ function letsBegin() {
       case "edit a table":
         editTable();
         break;
+
       default:
         endProgram();
         break;
@@ -47,10 +48,18 @@ function letsBegin() {
 function tableSelection() {
   inquirer.prompt(questions.tableSelection).then((answer) => {
     console.log(answer.table);
-    db.query(`SELECT * FROM ??`, answer.table, function (err, results) {
-      console.table(results);
-      letsBegin();
-    });
+    switch (answer.table) {
+      case "department":
+        viewDepartment();
+        break;
+      case "role":
+        viewRoleAll();
+        break;
+
+      default:
+        viewEmployee();
+        break;
+    }
   });
 }
 
@@ -76,6 +85,33 @@ function editTable() {
         break;
     }
   });
+}
+
+function viewDepartment() {
+  db.query("SELECT * FROM department", (err, result) => {
+    console.table(result);
+    letsBegin();
+  });
+}
+
+function viewEmployee() {
+  db.query(
+    "SELECT employee.id, employee.first_name AS first, employee.last_name AS last, em.first_name AS 'Manager First', em.last_name AS 'Manager Last', role.title AS job, role.salary, department.name AS department FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id LEFT JOIN employee em ON employee.manager_id = em.id",
+    (err, result) => {
+      console.table(result);
+      letsBegin();
+    }
+  );
+}
+
+function viewRoleAll() {
+  db.query(
+    "SELECT role.id, role.title, role.salary, department.name AS department FROM role LEFT JOIN department ON role.department_id = department.id",
+    (err, result) => {
+      console.table(result);
+      letsBegin();
+    }
+  );
 }
 
 function addDepartment() {
@@ -130,33 +166,38 @@ function addRole() {
 function addEmployee() {
   inquirer.prompt(questions.addEmployee).then((answers) => {
     console.log(answers);
-    let employee = new Employee(
-      answers.id,
-      answers.first_name,
-      answers.last_name,
-      answers.role_id,
-      answers.manager_id
-    );
-    db.query(
-      "INSERT INTO employee (id, first_name, last_name, role_id, manager_id) VALUES(?,?,?,?,?)",
-      [
-        employee.id,
-        employee.first_name,
-        employee.last_name,
-        employee.role_id,
-        employee.manager_id,
-      ],
-      (err, result) => {
-        if (err) {
-          console.error(err);
+    if (!answers.manager_id) {
+      console.log("you must enter manager id");
+      editTable();
+    } else {
+      let employee = new Employee(
+        answers.id,
+        answers.first_name,
+        answers.last_name,
+        answers.role_id,
+        answers.manager_id
+      );
+      db.query(
+        "INSERT INTO employee (id, first_name, last_name, role_id, manager_id) VALUES(?,?,?,?,?)",
+        [
+          employee.id,
+          employee.first_name,
+          employee.last_name,
+          employee.role_id,
+          employee.manager_id,
+        ],
+        (err, result) => {
+          if (err) {
+            console.error(err);
+          }
+          console.table(employee);
+          db.query(`SELECT * FROM employee`, function (err, results) {
+            console.table(results);
+            letsBegin();
+          });
         }
-        console.table(employee);
-        db.query(`SELECT * FROM employee`, function (err, results) {
-          console.table(results);
-          letsBegin();
-        });
-      }
-    );
+      );
+    }
   });
 }
 // async function addEmployeeAsync() {
@@ -181,6 +222,7 @@ function addEmployee() {
 function viewEmps() {
   db.query(`SELECT * FROM employee`, function (err, results) {
     console.table(results);
+    letsBegin();
   });
 }
 
@@ -198,7 +240,6 @@ function update() {
             console.error(err);
           } else {
             viewEmps();
-            letsBegin();
           }
         }
       );
