@@ -1,3 +1,4 @@
+-- creates a database
 DROP DATABASE IF EXISTS buisness_db;
 
 CREATE DATABASE buisness_db;
