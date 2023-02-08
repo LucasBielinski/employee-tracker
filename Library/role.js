@@ -1,3 +1,4 @@
+// builds role
 class Role {
   constructor(id, title, salary, department_id) {
     this.id = id;

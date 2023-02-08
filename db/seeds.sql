@@ -1,3 +1,4 @@
+-- seeds info to fill the database
 INSERT INTO department (id, name)
 VALUES (001, "Managment"),
        (002, "Programming"),
