@@ -15,7 +15,7 @@ If your README is long, add a table of contents to make it easy for users to fin
 
 ## Installation
 
-in oreder to use this application, you must npm i inquirer@8.2.4, dotenv, mysql2, and console.table.
+in order to use this application, you must npm i inquirer@8.2.4, dotenv, mysql2, and console.table.
 
 ## Usage
 
