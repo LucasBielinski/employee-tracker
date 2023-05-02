@@ -22,5 +22,6 @@ N/A
 
 ## How to Contribute
 
+For questions and contributions, you can reach me here:
 [Email](mailto:bielinskilucas@gmail.com)
 [Github](https://github.com/LucasBielinski)
