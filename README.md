@@ -2,16 +2,7 @@
 
 ## Description
 
-I wrote this project as an easy way to update information about employess and buisness roles. This way, someone does not need to leave the terminal to add, view, or updated their database. In this project, I learned how to write and call SQL queries from a JS file.
-
-## Table of Contents (Optional)
-
-If your README is long, add a table of contents to make it easy for users to find what they need.
-
-- [Installation](#installation)
-- [Usage](#usage)
-- [Credits](#credits)
-- [License](#license)
+I wrote this project as an easy way to update information about employees and business roles. This way, someone does not need to leave the terminal to add, view, or update their database. In this project, I learned how to write and call SQL queries from a JS file.
 
 ## Installation
 
