@@ -20,14 +20,7 @@ N/A
 
 N/A
 
-## Features
-
-N/A
-
 ## How to Contribute
 
-N/A
-
-## Tests
-
-N/A
+[Email](mailto:bielinskilucas@gmail.com)
+[Github](https://github.com/LucasBielinski)
