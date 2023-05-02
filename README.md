@@ -6,7 +6,7 @@ I wrote this project as an easy way to update information about employees and bu
 
 ## Installation
 
-in order to use this application, you must npm i inquirer@8.2.4, dotenv, mysql2, and console.table.
+In order to use this application, you must npm i inquirer@8.2.4, dotenv, mysql2, and console.table.
 
 ## Usage
 
